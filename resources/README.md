@@ -1,1 +1,0 @@
-shooting-the-duck

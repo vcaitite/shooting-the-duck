@@ -3,9 +3,12 @@ import sys
 import random
 
 pygame.init()
+pygame.mixer.init()
 screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(False)
+
+gunshot_effect = pygame.mixer.music.load('resources/sounds/GunShot.ogg')
 
 game_font = pygame.font.Font(None, 100)
 game_font.set_italic(True)
@@ -13,20 +16,20 @@ text_suface = game_font.render("Victory!!!", True, (10, 240, 10))
 text_rect = text_suface.get_rect(center=(1280/2, 720/2))
 
 # Loading Images
-sky_bg = pygame.image.load("resources/blue.jpg")
+sky_bg = pygame.image.load("resources/images/blue.jpg")
 sky_bg = pygame.transform.scale(sky_bg, (1280, 720))
-land_bg = pygame.image.load("resources/Land_BG.png")
-water_bg = pygame.image.load("resources/Water_BG.png")
-cloud1_bg = pygame.image.load("resources/Cloud1.png")
-cloud2_bg = pygame.image.load("resources/Cloud2.png")
-text_1 = pygame.image.load("resources/text_1.png")
+land_bg = pygame.image.load("resources/images/Land_BG.png")
+water_bg = pygame.image.load("resources/images/Water_BG.png")
+cloud1_bg = pygame.image.load("resources/images/Cloud1.png")
+cloud2_bg = pygame.image.load("resources/images/Cloud2.png")
+text_1 = pygame.image.load("resources/images/text_1.png")
 text_1 = pygame.transform.scale(text_1, (32*3, 56*3))
-text_2 = pygame.image.load("resources/text_2.png")
+text_2 = pygame.image.load("resources/images/text_2.png")
 text_2 = pygame.transform.scale(text_2, (32*3, 56*3))
-text_3 = pygame.image.load("resources/text_3.png")
+text_3 = pygame.image.load("resources/images/text_3.png")
 text_3 = pygame.transform.scale(text_3, (32*3, 56*3))
-crosshair = pygame.image.load("resources/crosshair_red_small.png")
-target_surface = pygame.image.load("resources/duck_target_white.png")
+crosshair = pygame.image.load("resources/images/crosshair_red_small.png")
+target_surface = pygame.image.load("resources/images/duck_target_white.png")
 
 land_position_y = 560
 land_speed_y = 0.5
@@ -61,6 +64,8 @@ while True:
         if event.type == pygame.MOUSEMOTION:
             crosshair_rect = crosshair.get_rect(center=event.pos)
         if event.type == pygame.MOUSEBUTTONDOWN:
+            pygame.mixer.stop()
+            pygame.mixer.music.play()
             for index, target_rect in enumerate(target_list):
                 if target_rect.collidepoint(event.pos):
                     del target_list[index]
