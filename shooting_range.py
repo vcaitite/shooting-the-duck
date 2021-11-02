@@ -5,6 +5,12 @@ import random
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
+pygame.mouse.set_visible(False)
+
+game_font = pygame.font.Font(None, 100)
+game_font.set_italic(True)
+text_suface = game_font.render("Victory!!!", True, (10, 240, 10))
+text_rect = text_suface.get_rect(center=(1280/2, 720/2))
 
 # Loading Images
 sky_bg = pygame.image.load("resources/blue.jpg")
@@ -54,11 +60,17 @@ while True:
             sys.exit()
         if event.type == pygame.MOUSEMOTION:
             crosshair_rect = crosshair.get_rect(center=event.pos)
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            for index, target_rect in enumerate(target_list):
+                if target_rect.collidepoint(event.pos):
+                    del target_list[index]
 
     screen.blit(sky_bg, (0,0))
 
     for target in target_list:
         screen.blit(target_surface, target)
+    if not target_list :
+        screen.blit(text_suface, text_rect)
 
     land_position_y -= land_speed_y
     if land_position_y <= 520 or land_position_y >= 600:
